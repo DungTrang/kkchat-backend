@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KK Chat - Test Socket.io</title>
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+<body>
+  <h1>KK Chat - Gửi Tin Nhắn</h1>
+  <div id="messages"></div>
+  <input id="messageInput" placeholder="Nhập tin nhắn...">
+  <button onclick="sendMessage()">Gửi</button>
+
+  <script>
+    const socket = io('http://localhost:3000'); // Kết nối tới server
+
+    // Lắng nghe sự kiện nhận tin nhắn
+    socket.on('receiveMessage', (message) => {
+      const messageElement = document.createElement('p');
+      messageElement.textContent = message;
+      document.getElementById('messages').appendChild(messageElement);
+    });
+
+    // Gửi tin nhắn
+    function sendMessage() {
+      const message = document.getElementById('messageInput').value;
+      socket.emit('sendMessage', message);
+      document.getElementById('messageInput').value = '';
+    }
+  </script>
+</body>
+</html>
